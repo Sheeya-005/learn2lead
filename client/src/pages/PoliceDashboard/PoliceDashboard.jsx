@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
-import { Landmark, ShieldAlert, Phone, MapPin, Eye, Lock, LogOut, CheckCircle, Radio, Clock } from 'lucide-react';
+import { Landmark, ShieldAlert, Phone, MapPin, Eye, Lock, LogOut, CheckCircle, Radio, Clock, Compass } from 'lucide-react';
 import DistrictMap from '../../components/DistrictMap';
+import DistrictGatewayModal from '../../components/DistrictGatewayModal';
 
 const PoliceDashboard = () => {
   const { user, token, logoutUser, updateProfile } = useAuth();
@@ -9,6 +10,7 @@ const PoliceDashboard = () => {
   // Tab states: 'alerts', 'settings'
   const [activeTab, setActiveTab] = useState('alerts');
   const [selectedDistrictId, setSelectedDistrictId] = useState('chennai');
+  const [showDistrictGateway, setShowDistrictGateway] = useState(true);
   
   // Alert states
   const [assignedAlerts, setAssignedAlerts] = useState([]);
@@ -201,15 +203,34 @@ const PoliceDashboard = () => {
   const resolvedAlertsCount = assignedAlerts.filter(a => a.alert_status === 'resolved').length;
 
   return (
-    <div style={{ minHeight: '100vh', background: '#0b0f19', display: 'flex', flexDirection: 'column' }}>
+    <div style={{ minHeight: '100vh', background: 'var(--bg-main)', display: 'flex', flexDirection: 'column' }}>
       
+      {/* Mandatory District Selection Gateway Modal */}
+      {showDistrictGateway && (
+        <DistrictGatewayModal 
+          role="POLICE"
+          initialDistrictId={selectedDistrictId}
+          onSelectDistrict={(district) => {
+            setSelectedDistrictId(district.id);
+            setShowDistrictGateway(false);
+          }}
+        />
+      )}
+
       {/* Header */}
       <header style={{ background: 'var(--bg-sidebar)', borderBottom: '1px solid var(--border-color)', padding: '16px 5%', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-          <Landmark size={28} color="#f59e0b" />
-          <span style={{ fontSize: '20px', fontWeight: '800', letterSpacing: '0.5px' }}>POLICE CENTRAL RESPONSE</span>
+          <Landmark size={28} color="#d97706" />
+          <span style={{ fontSize: '20px', fontWeight: '800', letterSpacing: '0.5px', color: '#0f172a' }}>POLICE CENTRAL RESPONSE</span>
         </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+          <button 
+            className="btn-outline" 
+            onClick={() => setShowDistrictGateway(true)}
+            style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '13px', padding: '8px 14px' }}
+          >
+            <Compass size={16} color="#d97706" /> Select District
+          </button>
           <button className="btn-outline" onClick={logoutUser} style={{ display: 'flex', alignItems: 'center', gap: '8px', borderColor: 'rgba(239, 68, 68, 0.3)', color: '#ef4444' }}>
             <LogOut size={16} /> Logout
           </button>

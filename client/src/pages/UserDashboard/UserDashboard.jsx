@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useAuth } from '../../context/AuthContext';
-import { ShieldAlert, User, Phone, MapPin, Eye, Lock, LogOut, History, Shield, CheckCircle, XCircle } from 'lucide-react';
+import { ShieldAlert, User, Phone, MapPin, Eye, Lock, LogOut, History, Shield, CheckCircle, XCircle, Compass } from 'lucide-react';
 import DistrictMap from '../../components/DistrictMap';
+import DistrictGatewayModal from '../../components/DistrictGatewayModal';
 
 const UserDashboard = () => {
   const { user, token, logoutUser, updateProfile } = useAuth();
@@ -9,6 +10,7 @@ const UserDashboard = () => {
   // Tab states: 'dashboard', 'history', 'settings'
   const [activeTab, setActiveTab] = useState('dashboard');
   const [selectedDistrictId, setSelectedDistrictId] = useState('chennai');
+  const [showDistrictGateway, setShowDistrictGateway] = useState(true);
   
   // SOS & Emergency states
   const [activeSOS, setActiveSOS] = useState(null);
@@ -280,17 +282,36 @@ const UserDashboard = () => {
   if (!user) return null;
 
   return (
-    <div style={{ minHeight: '100vh', background: '#0b0f19', display: 'flex', flexDirection: 'column' }}>
+    <div style={{ minHeight: '100vh', background: 'var(--bg-main)', display: 'flex', flexDirection: 'column' }}>
       
+      {/* Mandatory District Selection Gateway Modal */}
+      {showDistrictGateway && (
+        <DistrictGatewayModal 
+          role="CITIZEN"
+          initialDistrictId={selectedDistrictId}
+          onSelectDistrict={(district) => {
+            setSelectedDistrictId(district.id);
+            setShowDistrictGateway(false);
+          }}
+        />
+      )}
+
       {/* Navbar Dashboard Header */}
       <header style={{ background: 'var(--bg-sidebar)', borderBottom: '1px solid var(--border-color)', padding: '16px 5%', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-          <ShieldAlert size={28} color="#ef4444" className="animate-pulse-sos" />
-          <span style={{ fontSize: '20px', fontWeight: '800', letterSpacing: '0.5px' }}>CITIZEN MONITOR</span>
+          <ShieldAlert size={28} color="#059669" className="animate-pulse-sos" />
+          <span style={{ fontSize: '20px', fontWeight: '800', letterSpacing: '0.5px', color: '#0f172a' }}>CITIZEN MONITOR</span>
         </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+          <button 
+            className="btn-outline" 
+            onClick={() => setShowDistrictGateway(true)}
+            style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '13px', padding: '8px 14px' }}
+          >
+            <Compass size={16} color="#059669" /> Select District
+          </button>
           <div style={{ textAlign: 'right', display: 'none', sm: 'block' }}>
-            <div style={{ fontWeight: '600', fontSize: '14px' }}>{user.fullName}</div>
+            <div style={{ fontWeight: '600', fontSize: '14px', color: '#0f172a' }}>{user.fullName}</div>
             <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>@{user.username}</div>
           </div>
           <button className="btn-outline" onClick={logoutUser} style={{ display: 'flex', alignItems: 'center', gap: '8px', borderColor: 'rgba(239, 68, 68, 0.3)', color: '#ef4444' }}>
