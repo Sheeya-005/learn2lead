@@ -843,15 +843,27 @@ const AdministratorDashboard = () => {
                         <td>{alert.response_time ? `${Math.floor(alert.response_time / 60)}m ${alert.response_time % 60}s` : 'N/A'}</td>
                         <td>{new Date(alert.created_at).toLocaleString()}</td>
                         <td>
-                          {alert.alert_status !== 'resolved' ? (
-                            <button className="btn-primary" onClick={() => openModal('assign_police', alert)} style={{ fontSize: '11px', padding: '6px 12px' }}>
-                              Assign Patrol
-                            </button>
-                          ) : (
-                            <span style={{ fontSize: '11px', color: '#10b981', display: 'flex', alignItems: 'center', gap: '4px', fontWeight: '600' }}>
-                              <CheckCircle size={12} /> Resolved
-                            </span>
-                          )}
+                          <div style={{ display: 'flex', gap: '6px', alignItems: 'center' }}>
+                            {alert.alert_status !== 'resolved' ? (
+                              <button className="btn-primary" onClick={() => openModal('assign_police', alert)} style={{ fontSize: '11px', padding: '6px 10px' }}>
+                                Assign Patrol
+                              </button>
+                            ) : (
+                              <span style={{ fontSize: '11px', color: '#10b981', display: 'flex', alignItems: 'center', gap: '4px', fontWeight: '600' }}>
+                                <CheckCircle size={12} /> Resolved
+                              </span>
+                            )}
+                            <a 
+                              href={`https://www.google.com/maps/dir/?api=1&destination=${alert.latitude},${alert.longitude}`}
+                              target="_blank"
+                              rel="noreferrer"
+                              className="btn-outline"
+                              style={{ fontSize: '11px', padding: '6px 10px', textDecoration: 'none', color: '#dc2626', borderColor: '#fca5a5' }}
+                              title="Navigate to Reach Person"
+                            >
+                              Navigate 🗺️
+                            </a>
+                          </div>
                         </td>
                       </tr>
                     ))}

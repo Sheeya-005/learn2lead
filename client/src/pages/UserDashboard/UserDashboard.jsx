@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useAuth } from '../../context/AuthContext';
-import { ShieldAlert, User, Phone, MapPin, Eye, Lock, LogOut, History, Shield, CheckCircle, XCircle, Compass } from 'lucide-react';
+import { ShieldAlert, User, Phone, MapPin, Eye, Lock, LogOut, History, Shield, CheckCircle, XCircle, Compass, Volume2 } from 'lucide-react';
 import DistrictMap from '../../components/DistrictMap';
 import DistrictGatewayModal from '../../components/DistrictGatewayModal';
+import { playSOSTone } from '../../utils/audioAlert';
 
 const UserDashboard = () => {
   const { user, token, logoutUser, updateProfile } = useAuth();
@@ -144,6 +145,7 @@ const UserDashboard = () => {
   // Transmit SOS details with real coordinates or fallback mock coordinates
   const transmitSOS = () => {
     setLoadingSOS(true);
+    playSOSTone(); // Play emergency audio siren tone
 
     const sendRequest = (lat, lng) => {
       fetch('http://localhost:5001/api/user/sos', {

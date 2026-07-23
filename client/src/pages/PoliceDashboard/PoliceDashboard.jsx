@@ -386,11 +386,26 @@ const PoliceDashboard = () => {
 
                   {/* Coordinates & Location maps metadata */}
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', borderTop: '1px solid var(--border-color)', paddingTop: '16px' }}>
-                    <h4 style={{ fontSize: '13px', fontWeight: '700', color: 'var(--warning)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Location Geolocation</h4>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '13px' }}>
-                      <MapPin size={16} color="#ef4444" />
-                      <strong>Coordinates:</strong> Lat: {parseFloat(selectedAlert.latitude).toFixed(5)}, Lng: {parseFloat(selectedAlert.longitude).toFixed(5)}
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <h4 style={{ fontSize: '13px', fontWeight: '700', color: 'var(--warning)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Location Geolocation</h4>
+                      
+                      {/* Navigate to Person Link Button */}
+                      <a 
+                        href={`https://www.google.com/maps/dir/?api=1&destination=${selectedAlert.latitude},${selectedAlert.longitude}`}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="btn-primary"
+                        style={{ background: '#dc2626', color: '#ffffff', fontSize: '12px', padding: '6px 12px', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '6px', borderRadius: '6px' }}
+                      >
+                        <Compass size={14} /> Navigate to Reach Person 🗺️
+                      </a>
                     </div>
+
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '13px' }}>
+                      <MapPin size={16} color="#dc2626" />
+                      <strong>Target Coordinates:</strong> Lat: {parseFloat(selectedAlert.latitude).toFixed(5)}, Lng: {parseFloat(selectedAlert.longitude).toFixed(5)}
+                    </div>
+
                     {/* Interactive District Map preview */}
                     <div style={{ width: '100%' }}>
                       <DistrictMap 
