@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
+const path = require('path');
 require('dotenv').config();
 
 const { initializeDatabase } = require('./config/db');
@@ -26,15 +27,15 @@ app.use(morgan('dev'));
 // Main API Routes
 app.use('/api', apiRouter);
 
-// Base route response
-app.get('/', (req, res) => {
-  res.json({
-    success: true,
-    message: 'Women Safety Management System REST API is running.'
-  });
+// Serve static files from the React app build directory
+app.use(express.static(path.join(__dirname, '../client/dist')));
+
+// Serve React App for any route that doesn't match /api
+app.get(/^(?!\/api).*/, (req, res) => {
+  res.sendFile(path.join(__dirname, '../client/dist/index.html'));
 });
 
-// Fallback for 404 Errors
+// Fallback for 404 Errors (for API requests that are not defined)
 app.use((req, res, next) => {
   res.status(404).json({ success: false, message: 'Resource not found' });
 });
