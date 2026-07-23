@@ -60,7 +60,7 @@ const AdministratorDashboard = () => {
   // Fetch Stats Metrics
   const fetchStats = async () => {
     try {
-      const res = await fetch('http://localhost:5001/api/admin/stats', {
+      const res = await fetch('/api/admin/stats', {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       const data = await res.json();
@@ -71,7 +71,7 @@ const AdministratorDashboard = () => {
   // Fetch Users
   const fetchUsers = async () => {
     try {
-      const res = await fetch('http://localhost:5001/api/admin/users', {
+      const res = await fetch('/api/admin/users', {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       const data = await res.json();
@@ -82,7 +82,7 @@ const AdministratorDashboard = () => {
   // Fetch Police
   const fetchPolice = async () => {
     try {
-      const res = await fetch('http://localhost:5001/api/admin/police', {
+      const res = await fetch('/api/admin/police', {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       const data = await res.json();
@@ -93,7 +93,7 @@ const AdministratorDashboard = () => {
   // Fetch Admins
   const fetchAdmins = async () => {
     try {
-      const res = await fetch('http://localhost:5001/api/admin/admins', {
+      const res = await fetch('/api/admin/admins', {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       const data = await res.json();
@@ -104,7 +104,7 @@ const AdministratorDashboard = () => {
   // Fetch SOS Alerts
   const fetchAlerts = async () => {
     try {
-      const res = await fetch('http://localhost:5001/api/admin/alerts', {
+      const res = await fetch('/api/admin/alerts', {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       const data = await res.json();
@@ -115,13 +115,13 @@ const AdministratorDashboard = () => {
   // Fetch Logs
   const fetchLogs = async () => {
     try {
-      const res1 = await fetch('http://localhost:5001/api/admin/logs/activity', {
+      const res1 = await fetch('/api/admin/logs/activity', {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       const data1 = await res1.json();
       if (data1.success) setActivityLogs(data1.logs);
 
-      const res2 = await fetch('http://localhost:5001/api/admin/logs/login', {
+      const res2 = await fetch('/api/admin/logs/login', {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       const data2 = await res2.json();
@@ -177,7 +177,7 @@ const AdministratorDashboard = () => {
     setSuccessMsg('');
     setModalLoading(true);
 
-    let url = 'http://localhost:5001/api/admin/';
+    let url = '/api/admin/';
     let method = 'POST';
 
     // Build API endpoints based on type
@@ -234,7 +234,7 @@ const AdministratorDashboard = () => {
     setModalLoading(true);
     setErrorMsg('');
     
-    let url = 'http://localhost:5001/api/admin/';
+    let url = '/api/admin/';
     if (activeTab === 'users') url += `users/${selectedItem.id}`;
     if (activeTab === 'police') url += `police/${selectedItem.id}`;
     if (activeTab === 'admins') url += `admins/${selectedItem.id}`;
@@ -268,7 +268,7 @@ const AdministratorDashboard = () => {
   // Toggle account active status
   const handleToggleStatus = async (item, currentStatus) => {
     const newStatus = currentStatus === 'active' ? 'inactive' : 'active';
-    let url = 'http://localhost:5001/api/admin/';
+    let url = '/api/admin/';
     if (activeTab === 'users') url += `users/${item.id}/status`;
     if (activeTab === 'police') url += `police/${item.id}/status`;
     if (activeTab === 'admins') url += `admins/${item.id}/status`;
@@ -309,7 +309,7 @@ const AdministratorDashboard = () => {
     setProfileLoading(true);
 
     try {
-      const res = await fetch('http://localhost:5001/api/admin/profile', {
+      const res = await fetch('/api/admin/profile', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -357,7 +357,7 @@ const AdministratorDashboard = () => {
     setPwLoading(true);
 
     try {
-      const res = await fetch('http://localhost:5001/api/auth/change-password', {
+      const res = await fetch('/api/auth/change-password', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -397,7 +397,7 @@ const AdministratorDashboard = () => {
     }
 
     try {
-      const res = await fetch(`http://localhost:5001/api/admin/alerts/${selectedItem.id}/assign`, {
+      const res = await fetch(`/api/admin/alerts/${selectedItem.id}/assign`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
@@ -431,7 +431,7 @@ const AdministratorDashboard = () => {
     setSuccessMsg('');
     setModalLoading(true);
 
-    let url = 'http://localhost:5001/api/admin/';
+    let url = '/api/admin/';
     if (activeTab === 'users') url += `users/${selectedItem.id}/reset-password`;
     if (activeTab === 'police') url += `police/${selectedItem.id}/reset-password`;
     if (activeTab === 'admins') url += `admins/${selectedItem.id}/reset-password`;

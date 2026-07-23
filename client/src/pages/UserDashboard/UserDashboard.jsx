@@ -53,7 +53,7 @@ const UserDashboard = () => {
   // Fetch active SOS status
   const fetchActiveSOS = async () => {
     try {
-      const res = await fetch('http://localhost:5001/api/user/active-sos', {
+      const res = await fetch('/api/user/active-sos', {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       const data = await res.json();
@@ -73,7 +73,7 @@ const UserDashboard = () => {
   // Fetch Emergency History
   const fetchHistory = async () => {
     try {
-      const res = await fetch('http://localhost:5001/api/user/sos-history', {
+      const res = await fetch('/api/user/sos-history', {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       const data = await res.json();
@@ -148,7 +148,7 @@ const UserDashboard = () => {
     playSOSTone(); // Play emergency audio siren tone
 
     const sendRequest = (lat, lng) => {
-      fetch('http://localhost:5001/api/user/sos', {
+      fetch('/api/user/sos', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -181,7 +181,7 @@ const UserDashboard = () => {
           const mockLng = 80.2707 + (Math.random() - 0.5) * 0.01;
           sendRequest(mockLat, mockLng);
         },
-        { timeout: 6000 }
+        { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
       );
     } else {
       const mockLat = 13.0827 + (Math.random() - 0.5) * 0.01;
@@ -204,7 +204,7 @@ const UserDashboard = () => {
     setProfileLoading(true);
 
     try {
-      const res = await fetch('http://localhost:5001/api/user/profile', {
+      const res = await fetch('/api/user/profile', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -256,7 +256,7 @@ const UserDashboard = () => {
     setPwLoading(true);
 
     try {
-      const res = await fetch('http://localhost:5001/api/auth/change-password', {
+      const res = await fetch('/api/auth/change-password', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

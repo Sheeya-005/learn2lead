@@ -52,7 +52,7 @@ const PoliceDashboard = () => {
     setLoadingAlerts(true);
     setErrorAlerts('');
     try {
-      const res = await fetch('http://localhost:5001/api/police/alerts', {
+      const res = await fetch('/api/police/alerts', {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       const data = await res.json();
@@ -85,7 +85,7 @@ const PoliceDashboard = () => {
   // Update response status of alert
   const handleUpdateStatus = async (alertId, newStatus) => {
     try {
-      const res = await fetch('http://localhost:5001/api/police/alerts/status', {
+      const res = await fetch('/api/police/alerts/status', {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
@@ -118,7 +118,7 @@ const PoliceDashboard = () => {
     setProfileLoading(true);
 
     try {
-      const res = await fetch('http://localhost:5001/api/police/profile', {
+      const res = await fetch('/api/police/profile', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -172,7 +172,7 @@ const PoliceDashboard = () => {
     setPwLoading(true);
 
     try {
-      const res = await fetch('http://localhost:5001/api/auth/change-password', {
+      const res = await fetch('/api/auth/change-password', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

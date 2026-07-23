@@ -19,7 +19,7 @@ const UserLogin = () => {
   const fetchCaptcha = async () => {
     try {
       setError('');
-      const res = await fetch('http://localhost:5001/api/auth/captcha');
+      const res = await fetch('/api/auth/captcha');
       const data = await res.json();
       if (data.success) {
         setCaptchaImage(data.image);
@@ -48,7 +48,7 @@ const UserLogin = () => {
     setError('');
 
     try {
-      const res = await fetch('http://localhost:5001/api/auth/login', {
+      const res = await fetch('/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

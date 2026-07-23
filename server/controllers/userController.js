@@ -31,6 +31,8 @@ exports.getProfile = async (req, res) => {
   }
 };
 
+const smsService = require('../services/smsService');
+
 // Trigger SOS Alert
 exports.triggerSOS = async (req, res) => {
   const { latitude, longitude } = req.body;
@@ -40,6 +42,14 @@ exports.triggerSOS = async (req, res) => {
   }
 
   try {
+    // Fetch victim profile details
+    const [userRecords] = await db.query(
+      'SELECT full_name, phone, emergency_contact FROM users WHERE id = ?',
+      [req.user.id]
+    );
+
+    const victim = userRecords[0] || { full_name: req.user.username, phone: '', emergency_contact: '' };
+
     // Prevent creating a new alert if there is already an active (unresolved) SOS alert from this user
     const [activeAlerts] = await db.query(
       'SELECT id FROM emergency_alerts WHERE user_id = ? AND alert_status != "resolved"',
@@ -59,17 +69,35 @@ exports.triggerSOS = async (req, res) => {
       [req.user.id, latitude, longitude]
     );
 
+    // Fetch nearest police responder phone number
+    const [policeRecords] = await db.query('SELECT phone FROM police_officers WHERE status = "active" LIMIT 1');
+    const policePhone = (policeRecords && policeRecords[0]) ? policeRecords[0].phone : '100';
+    const volunteerPhone = '9876543210';
+
+    // Dispatch Emergency SMS to Police, Volunteer, and Emergency Contact (Guardian)
+    const smsInfo = await smsService.dispatchEmergencySMSAlert({
+      victimName: victim.full_name,
+      victimPhone: victim.phone,
+      emergencyContact: victim.emergency_contact,
+      policePhone: policePhone,
+      volunteerPhone: volunteerPhone,
+      latitude: latitude,
+      longitude: longitude
+    });
+
     await logActivity(
       req.user.username,
       'USER',
       'SOS_TRIGGERED',
-      `Triggered emergency SOS at location: Lat ${latitude}, Lng ${longitude}`
+      `Triggered emergency SOS at location: Lat ${latitude}, Lng ${longitude}. SMS dispatched.`
     );
 
     return res.status(201).json({
       success: true,
-      message: 'SOS Alert transmitted to central monitoring and nearby police patrols!',
-      alertId: result.insertId
+      message: '🚨 EMERGENCY ALERT DISPATCHED! SMS sent to Police, Volunteer & Emergency Contact.',
+      alertId: result.insertId,
+      mapsUrl: `https://maps.google.com/?q=${latitude},${longitude}`,
+      smsSummary: smsInfo
     });
 
   } catch (error) {
