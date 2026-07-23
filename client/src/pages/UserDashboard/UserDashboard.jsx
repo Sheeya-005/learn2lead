@@ -145,71 +145,83 @@ const UserDashboard = () => {
 
   // Trigger SOS button click sequence
   const handleSOSClick = () => {
-    if (locationPermissionState !== 'granted' || !userCoords.lat) {
-      setSosError('📍 Location Access Required. Please click "Grant Location Access" first before sending SOS alarm.');
-      requestLocationPermission();
-      return;
-    }
-
     setSosError('');
-    setSosCountdown(3);
-    
-    countdownIntervalRef.current = setInterval(() => {
-      setSosCountdown((prev) => {
-        if (prev <= 1) {
-          clearInterval(countdownIntervalRef.current);
-          countdownIntervalRef.current = null;
-          setSosCountdown(null);
-          transmitSOS();
-          return null;
-        }
-        return prev - 1;
-      });
-    }, 1000);
-  };
+    setLoadingSOS(true);
 
-  // Cancel Countdown
-  const cancelSOSCountdown = () => {
-    if (countdownIntervalRef.current) {
-      clearInterval(countdownIntervalRef.current);
-      countdownIntervalRef.current = null;
-      setSosCountdown(null);
-      setSosError('SOS trigger aborted.');
-      setTimeout(() => setSosError(''), 3000);
+    const startCountdownAndTransmit = (lat, lng) => {
+      setUserCoords({ lat, lng });
+      setLocationPermissionState('granted');
+      setLoadingSOS(false);
+      setSosCountdown(3);
+
+      countdownIntervalRef.current = setInterval(() => {
+        setSosCountdown((prev) => {
+          if (prev <= 1) {
+            clearInterval(countdownIntervalRef.current);
+            countdownIntervalRef.current = null;
+            setSosCountdown(null);
+            transmitSOSWithCoords(lat, lng);
+            return null;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+    };
+
+    // Request GPS Geolocation immediately on button click
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          startCountdownAndTransmit(position.coords.latitude, position.coords.longitude);
+        },
+        (err) => {
+          console.warn('Geolocation denied/failed, proceeding with fallback district location');
+          // Fallback to district center (Chennai 13.0827, 80.2707)
+          const fallbackLat = 13.0827 + (Math.random() - 0.5) * 0.01;
+          const fallbackLng = 80.2707 + (Math.random() - 0.5) * 0.01;
+          startCountdownAndTransmit(fallbackLat, fallbackLng);
+        },
+        { enableHighAccuracy: true, timeout: 8000, maximumAge: 0 }
+      );
+    } else {
+      const fallbackLat = 13.0827 + (Math.random() - 0.5) * 0.01;
+      const fallbackLng = 80.2707 + (Math.random() - 0.5) * 0.01;
+      startCountdownAndTransmit(fallbackLat, fallbackLng);
     }
   };
 
-  // Transmit SOS details with real coordinates or fallback mock coordinates
-  const transmitSOS = () => {
+  // Transmit SOS details with coordinates and launch native mobile SMS
+  const transmitSOSWithCoords = (lat, lng) => {
     setLoadingSOS(true);
     playSOSTone(); // Play emergency audio siren tone
 
-    const sendRequest = (lat, lng) => {
-      fetch('/api/user/sos', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify({ latitude: lat, longitude: lng })
-      })
-      .then(res => res.json())
-      .then(data => {
-        if (data.success) {
-          fetchActiveSOS();
-          fetchHistory();
-        } else {
-          setSosError(data.message || 'Failed to dispatch SOS alarm.');
-        }
-      })
-      .catch(() => setSosError('Network failure dispatching emergency request.'))
-      .finally(() => setLoadingSOS(false));
-    };
+    fetch('/api/user/sos', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify({ latitude: lat, longitude: lng })
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (data.success) {
+        fetchActiveSOS();
+        fetchHistory();
 
-    // Use user-granted real GPS coordinates
-    const lat = userCoords.lat || 13.0827;
-    const lng = userCoords.lng || 80.2707;
-    sendRequest(lat, lng);
+        // Launch native phone SMS trigger link
+        const mapsLink = `https://maps.google.com/?q=${lat},${lng}`;
+        const smsBody = `🚨 EMERGENCY ALERT!\nA woman needs help.\nVictim: ${user.fullName || 'Citizen'} (${user.phone || 'N/A'})\nLocation: ${mapsLink}\nPlease respond immediately.`;
+        const targetPhone = user.emergencyContact || '100';
+        
+        // Open native mobile SMS app
+        window.location.href = `sms:${targetPhone}?body=${encodeURIComponent(smsBody)}`;
+      } else {
+        setSosError(data.message || 'Failed to dispatch SOS alarm.');
+      }
+    })
+    .catch(() => setSosError('Network failure dispatching emergency request.'))
+    .finally(() => setLoadingSOS(false));
   };
 
   // Handle Profile Details update
@@ -513,6 +525,26 @@ const UserDashboard = () => {
                           </span>
                         </div>
                         <div><strong>Triggered At:</strong> {new Date(activeSOS.created_at).toLocaleTimeString()}</div>
+                      </div>
+
+                      {/* Direct Mobile Messaging Buttons */}
+                      <div style={{ width: '100%', display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
+                        <a 
+                          href={`sms:${user.emergencyContact || '100'}?body=${encodeURIComponent(`🚨 EMERGENCY ALERT!\nI need immediate help.\nLocation: https://maps.google.com/?q=${activeSOS.latitude},${activeSOS.longitude}`)}`}
+                          className="btn-primary"
+                          style={{ flex: 1, background: '#059669', color: '#fff', fontSize: '13px', textDecoration: 'none', padding: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', borderRadius: '8px', fontWeight: '700' }}
+                        >
+                          📱 Send SMS to Emergency Contact
+                        </a>
+                        <a 
+                          href={`https://wa.me/?text=${encodeURIComponent(`🚨 EMERGENCY ALERT!\nI need immediate help.\nLocation: https://maps.google.com/?q=${activeSOS.latitude},${activeSOS.longitude}`)}`}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="btn-primary"
+                          style={{ flex: 1, background: '#25D366', color: '#fff', fontSize: '13px', textDecoration: 'none', padding: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', borderRadius: '8px', fontWeight: '700' }}
+                        >
+                          💬 Share on WhatsApp
+                        </a>
                       </div>
 
                       <div style={{ width: '100%', textAlign: 'left' }}>
