@@ -19,6 +19,10 @@ const UserDashboard = () => {
   const [loadingSOS, setLoadingSOS] = useState(false);
   const [sosError, setSosError] = useState('');
   const [history, setHistory] = useState([]);
+
+  // Location Access Permission state
+  const [locationPermissionState, setLocationPermissionState] = useState('prompt'); // 'prompt', 'granted', 'denied'
+  const [userCoords, setUserCoords] = useState({ lat: null, lng: null });
   
   // Form states (Change Password)
   const [currentPassword, setCurrentPassword] = useState('');
@@ -113,17 +117,50 @@ const UserDashboard = () => {
     }
   };
 
-  // Trigger SOS button click - Starts countdown
+  // Request explicit Location Access Permission from user
+  const requestLocationPermission = () => {
+    setSosError('');
+    if (!navigator.geolocation) {
+      setLocationPermissionState('denied');
+      setSosError('Geolocation is not supported by your browser.');
+      return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        setUserCoords({
+          lat: position.coords.latitude,
+          lng: position.coords.longitude
+        });
+        setLocationPermissionState('granted');
+        setSosError('');
+      },
+      (err) => {
+        setLocationPermissionState('denied');
+        setSosError('⚠️ Location Access Denied. Please enable location permissions in browser settings to transmit SOS alerts.');
+      },
+      { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+    );
+  };
+
+  // Trigger SOS button click sequence
   const handleSOSClick = () => {
+    if (locationPermissionState !== 'granted' || !userCoords.lat) {
+      setSosError('📍 Location Access Required. Please click "Grant Location Access" first before sending SOS alarm.');
+      requestLocationPermission();
+      return;
+    }
+
     setSosError('');
     setSosCountdown(3);
     
     countdownIntervalRef.current = setInterval(() => {
-      setSosCountdown(prev => {
+      setSosCountdown((prev) => {
         if (prev <= 1) {
           clearInterval(countdownIntervalRef.current);
           countdownIntervalRef.current = null;
-          transmitSOS(); // Countdown finished, transmit SOS
+          setSosCountdown(null);
+          transmitSOS();
           return null;
         }
         return prev - 1;
@@ -169,25 +206,10 @@ const UserDashboard = () => {
       .finally(() => setLoadingSOS(false));
     };
 
-    // Use Geolocation API if available, else fallback to standard coordinates (Chennai City Center mockup)
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          sendRequest(position.coords.latitude, position.coords.longitude);
-        },
-        () => {
-          // Fallback coordinate mapping
-          const mockLat = 13.0827 + (Math.random() - 0.5) * 0.01;
-          const mockLng = 80.2707 + (Math.random() - 0.5) * 0.01;
-          sendRequest(mockLat, mockLng);
-        },
-        { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
-      );
-    } else {
-      const mockLat = 13.0827 + (Math.random() - 0.5) * 0.01;
-      const mockLng = 80.2707 + (Math.random() - 0.5) * 0.01;
-      sendRequest(mockLat, mockLng);
-    }
+    // Use user-granted real GPS coordinates
+    const lat = userCoords.lat || 13.0827;
+    const lng = userCoords.lng || 80.2707;
+    sendRequest(lat, lng);
   };
 
   // Handle Profile Details update
@@ -392,10 +414,34 @@ const UserDashboard = () => {
                     </div>
                   )}
 
+                  {/* Location Permission Access Banner */}
+                  {locationPermissionState !== 'granted' ? (
+                    <div style={{ background: '#fef2f2', border: '1px solid #fca5a5', borderRadius: '12px', padding: '16px', marginBottom: '20px', width: '100%', maxWidth: '360px', textAlign: 'center' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', color: '#dc2626', fontWeight: '700', fontSize: '14px', marginBottom: '6px' }}>
+                        <MapPin size={18} /> Location Access Required
+                      </div>
+                      <p style={{ fontSize: '12px', color: '#991b1b', marginBottom: '14px', lineHeight: '1.4' }}>
+                        To transmit your exact live coordinates to emergency contacts & police, please grant location access.
+                      </p>
+                      <button 
+                        className="btn-primary"
+                        onClick={requestLocationPermission}
+                        style={{ background: '#dc2626', color: '#fff', fontSize: '13px', padding: '10px 18px', display: 'inline-flex', alignItems: 'center', gap: '6px' }}
+                      >
+                        <Compass size={16} /> Grant Location Access 📍
+                      </button>
+                    </div>
+                  ) : (
+                    <div style={{ background: '#ecfdf5', border: '1px solid #a7f3d0', borderRadius: '10px', padding: '8px 14px', marginBottom: '20px', fontSize: '12px', color: '#065f46', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <CheckCircle size={16} color="#059669" />
+                      <span>GPS Location Access Active (Lat: {userCoords.lat?.toFixed(4)}, Lng: {userCoords.lng?.toFixed(4)})</span>
+                    </div>
+                  )}
+
                   {!activeSOS && sosCountdown === null && (
                     <>
                       <h3 style={{ fontSize: '20px', fontWeight: '700', marginBottom: '8px' }}>Press Trigger in Danger</h3>
-                      <p style={{ color: 'var(--text-secondary)', fontSize: '13px', maxWidth: '280px', marginBottom: '35px' }}>
+                      <p style={{ color: 'var(--text-secondary)', fontSize: '13px', maxWidth: '280px', marginBottom: '25px' }}>
                         Tapping the button starts a 3s countdown before transmitting coordinates.
                       </p>
 
