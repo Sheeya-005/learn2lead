@@ -72,7 +72,7 @@ const UserRegister = () => {
   };
 
   return (
-    <div style={{ minHeight: '100vh', background: '#0b0f19', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '40px 20px' }}>
+    <div style={{ minHeight: '100vh', background: 'var(--bg-main)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '40px 20px' }}>
       <div className="glass-panel" style={{ width: '100%', maxWidth: '500px', padding: '40px 30px', position: 'relative' }}>
         
         <button 
@@ -83,8 +83,8 @@ const UserRegister = () => {
         </button>
 
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '10px', marginBottom: '25px' }}>
-          <div style={{ width: '52px', height: '52px', borderRadius: '50%', background: 'rgba(139,92,246,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '16px' }}>
-            <UserPlus size={24} color="#8b5cf6" />
+          <div style={{ width: '52px', height: '52px', borderRadius: '50%', background: 'rgba(5,150,105,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '16px' }}>
+            <UserPlus size={24} color="#059669" />
           </div>
           <h2 style={{ fontSize: '24px', fontWeight: '700', letterSpacing: '-0.5px' }}>Citizen Registration</h2>
           <p style={{ color: 'var(--text-secondary)', fontSize: '13px', textAlign: 'center', marginTop: '4px' }}>
@@ -204,7 +204,7 @@ const UserRegister = () => {
           Already have a profile?{' '}
           <button 
             onClick={() => navigate('/login/user')} 
-            style={{ background: 'transparent', padding: '0', color: '#a78bfa', fontWeight: '600' }}
+            style={{ background: 'transparent', padding: '0', color: '#059669', fontWeight: '600' }}
           >
             Sign In here
           </button>

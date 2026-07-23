@@ -3,7 +3,8 @@ const jwt = require('jsonwebtoken');
 const JWT_SECRET = process.env.JWT_SECRET || 'super_secret_women_safety_key_2026_safe';
 
 function generateRandomAlphanumeric(length = 6) {
-  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789';
+  // Use only uppercase letters and numbers, and exclude easily confused characters (I, O, 0, 1)
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
   let text = '';
   for (let i = 0; i < length; i++) {
     text += chars.charAt(Math.floor(Math.random() * chars.length));
@@ -15,9 +16,9 @@ function generateCaptchaSvg(text) {
   const width = 130;
   const height = 45;
   
-  // Add some random noise lines
+  // Add some random noise lines (reduced from 4 to 2 for better legibility)
   let lines = '';
-  for (let i = 0; i < 4; i++) {
+  for (let i = 0; i < 2; i++) {
     const x1 = Math.floor(Math.random() * width);
     const y1 = Math.floor(Math.random() * height);
     const x2 = Math.floor(Math.random() * width);
@@ -26,9 +27,9 @@ function generateCaptchaSvg(text) {
     lines += `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${color}" stroke-width="1.5" opacity="0.6" />`;
   }
 
-  // Add random noise dots
+  // Add random noise dots (reduced from 30 to 15 for better legibility)
   let dots = '';
-  for (let i = 0; i < 30; i++) {
+  for (let i = 0; i < 15; i++) {
     const cx = Math.floor(Math.random() * width);
     const cy = Math.floor(Math.random() * height);
     const r = Math.floor(Math.random() * 2) + 1;

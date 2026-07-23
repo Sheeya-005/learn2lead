@@ -77,7 +77,7 @@ const UserLogin = () => {
   };
 
   return (
-    <div style={{ minHeight: '100vh', background: '#0b0f19', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }}>
+    <div style={{ minHeight: '100vh', background: 'var(--bg-main)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }}>
       <div className="glass-panel" style={{ width: '100%', maxWidth: '420px', padding: '40px 30px', position: 'relative' }}>
         
         {/* Back navigation */}
@@ -89,8 +89,8 @@ const UserLogin = () => {
         </button>
 
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '10px', marginBottom: '30px' }}>
-          <div style={{ width: '52px', height: '52px', borderRadius: '50%', background: 'rgba(139,92,246,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '16px' }}>
-            <Users size={24} color="#8b5cf6" />
+          <div style={{ width: '52px', height: '52px', borderRadius: '50%', background: 'rgba(5,150,105,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '16px' }}>
+            <Users size={24} color="#059669" />
           </div>
           <h2 style={{ fontSize: '24px', fontWeight: '700', letterSpacing: '-0.5px' }}>Citizen Sign In</h2>
           <p style={{ color: 'var(--text-secondary)', fontSize: '13px', textAlign: 'center', marginTop: '4px' }}>
@@ -108,10 +108,10 @@ const UserLogin = () => {
         <form onSubmit={handleLogin} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
           
           <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-            <label style={{ fontSize: '13px', fontWeight: '500', color: 'var(--text-secondary)' }}>Username</label>
+            <label style={{ fontSize: '13px', fontWeight: '600', color: 'var(--text-secondary)' }}>Username</label>
             <input 
               type="text" 
-              placeholder="Enter citizen username" 
+              placeholder="Enter registered username" 
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               required 
@@ -119,7 +119,7 @@ const UserLogin = () => {
           </div>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-            <label style={{ fontSize: '13px', fontWeight: '500', color: 'var(--text-secondary)' }}>Password</label>
+            <label style={{ fontSize: '13px', fontWeight: '600', color: 'var(--text-secondary)' }}>Password</label>
             <input 
               type="password" 
               placeholder="Enter password" 
@@ -130,23 +130,23 @@ const UserLogin = () => {
           </div>
 
           {/* CAPTCHA section */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-            <label style={{ fontSize: '13px', fontWeight: '500', color: 'var(--text-secondary)' }}>Security Verification</label>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+            <label style={{ fontSize: '13px', fontWeight: '600', color: 'var(--text-secondary)' }}>Security CAPTCHA</label>
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
               {captchaImage ? (
                 <img 
                   src={captchaImage} 
                   alt="Captcha challenge" 
-                  style={{ height: '42px', borderRadius: '6px', border: '1px solid var(--border-color)', display: 'block' }}
+                  style={{ height: '42px', borderRadius: '6px', border: '1px solid var(--border-color)' }}
                 />
               ) : (
-                <div style={{ height: '42px', width: '130px', background: 'rgba(255,255,255,0.05)', borderRadius: '6px', border: '1px solid var(--border-color)' }}></div>
+                <div style={{ height: '42px', width: '130px', background: 'rgba(0,0,0,0.03)', borderRadius: '6px', border: '1px solid var(--border-color)' }}></div>
               )}
               <button 
                 type="button" 
                 onClick={fetchCaptcha} 
                 className="btn-outline" 
-                style={{ height: '42px', width: '42px', padding: '0', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                style={{ padding: '10px 12px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
                 title="Refresh CAPTCHA"
               >
                 <RefreshCw size={16} />
@@ -157,6 +157,7 @@ const UserLogin = () => {
               placeholder="Enter CAPTCHA code" 
               value={captchaAnswer}
               onChange={(e) => setCaptchaAnswer(e.target.value)}
+              style={{ marginTop: '4px' }}
               required 
             />
           </div>
@@ -165,7 +166,7 @@ const UserLogin = () => {
             type="submit" 
             className="btn-primary" 
             disabled={loading}
-            style={{ width: '100%', padding: '12px', marginTop: '5px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}
+            style={{ marginTop: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}
           >
             {loading ? 'Authenticating...' : (
               <>
@@ -180,7 +181,7 @@ const UserLogin = () => {
           Don't have a profile?{' '}
           <button 
             onClick={() => navigate('/register')} 
-            style={{ background: 'transparent', padding: '0', color: '#a78bfa', fontWeight: '600' }}
+            style={{ background: 'transparent', padding: '0', color: '#059669', fontWeight: '600' }}
           >
             Register citizen profile
           </button>

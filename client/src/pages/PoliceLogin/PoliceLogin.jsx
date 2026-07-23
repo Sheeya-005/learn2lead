@@ -76,7 +76,7 @@ const PoliceLogin = () => {
   };
 
   return (
-    <div style={{ minHeight: '100vh', background: '#0b0f19', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }}>
+    <div style={{ minHeight: '100vh', background: 'var(--bg-main)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }}>
       <div className="glass-panel" style={{ width: '100%', maxWidth: '420px', padding: '40px 30px', position: 'relative' }}>
         
         <button 
@@ -87,8 +87,8 @@ const PoliceLogin = () => {
         </button>
 
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '10px', marginBottom: '30px' }}>
-          <div style={{ width: '52px', height: '52px', borderRadius: '50%', background: 'rgba(245,158,11,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '16px' }}>
-            <Landmark size={24} color="#f59e0b" />
+          <div style={{ width: '52px', height: '52px', borderRadius: '50%', background: 'rgba(217,119,6,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '16px' }}>
+            <Landmark size={24} color="#d97706" />
           </div>
           <h2 style={{ fontSize: '24px', fontWeight: '700', letterSpacing: '-0.5px' }}>Police Responder Sign In</h2>
           <p style={{ color: 'var(--text-secondary)', fontSize: '13px', textAlign: 'center', marginTop: '4px' }}>
@@ -137,7 +137,7 @@ const PoliceLogin = () => {
                   style={{ height: '42px', borderRadius: '6px', border: '1px solid var(--border-color)', display: 'block' }}
                 />
               ) : (
-                <div style={{ height: '42px', width: '130px', background: 'rgba(255,255,255,0.05)', borderRadius: '6px', border: '1px solid var(--border-color)' }}></div>
+                <div style={{ height: '42px', width: '130px', background: 'rgba(0,0,0,0.03)', borderRadius: '6px', border: '1px solid var(--border-color)' }}></div>
               )}
               <button 
                 type="button" 
@@ -162,7 +162,7 @@ const PoliceLogin = () => {
             type="submit" 
             className="btn-primary" 
             disabled={loading}
-            style={{ width: '100%', padding: '12px', marginTop: '5px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', background: '#f59e0b' }}
+            style={{ width: '100%', padding: '12px', marginTop: '5px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', background: '#d97706', color: '#ffffff' }}
           >
             {loading ? 'Authenticating...' : (
               <>
