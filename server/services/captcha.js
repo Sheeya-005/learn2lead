@@ -2,21 +2,13 @@ const jwt = require('jsonwebtoken');
 
 const JWT_SECRET = process.env.JWT_SECRET || 'super_secret_women_safety_key_2026_safe';
 
-function generateRandomMath() {
-  const num1 = Math.floor(Math.random() * 12) + 4; // 4 to 15
-  const num2 = Math.floor(Math.random() * 8) + 1; // 1 to 8
-  const operations = ['+', '-'];
-  const operation = operations[Math.floor(Math.random() * operations.length)];
-
-  let answer;
-  if (operation === '+') {
-    answer = num1 + num2;
-  } else {
-    answer = num1 - num2;
+function generateRandomAlphanumeric(length = 6) {
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789';
+  let text = '';
+  for (let i = 0; i < length; i++) {
+    text += chars.charAt(Math.floor(Math.random() * chars.length));
   }
-
-  const equation = `${num1} ${operation} ${num2}`;
-  return { equation, answer };
+  return text;
 }
 
 function generateCaptchaSvg(text) {
@@ -64,7 +56,7 @@ function generateCaptchaSvg(text) {
         transform="rotate(${rotation} ${width/2} ${height/2})"
         letter-spacing="2"
       >
-        ${text} = ?
+        ${text}
       </text>
     </svg>
   `;
@@ -75,12 +67,12 @@ function generateCaptchaSvg(text) {
 }
 
 function createCaptcha() {
-  const { equation, answer } = generateRandomMath();
-  const image = generateCaptchaSvg(equation);
+  const text = generateRandomAlphanumeric(6);
+  const image = generateCaptchaSvg(text);
   
   // Sign the captcha token with JWT (expires in 3 minutes)
   const token = jwt.sign(
-    { answer: String(answer) },
+    { answer: text },
     JWT_SECRET,
     { expiresIn: '3m' }
   );
@@ -93,13 +85,15 @@ function createCaptcha() {
 
 function verifyCaptcha(token, clientAnswer) {
   try {
-    if (!token || !clientAnswer) return false;
+    if (!token || !clientAnswer) {
+      return false;
+    }
     
     // Decode and verify token
     const decoded = jwt.verify(token, JWT_SECRET);
     
     // Check answer case-insensitively and trimmed
-    return String(decoded.answer).trim() === String(clientAnswer).trim();
+    return String(decoded.answer).trim().toLowerCase() === String(clientAnswer).trim().toLowerCase();
   } catch (error) {
     // Token expired or invalid
     return false;

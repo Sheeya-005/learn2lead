@@ -151,7 +151,7 @@ const AdministratorLogin = () => {
             </div>
             <input 
               type="text" 
-              placeholder="Solve verification query" 
+              placeholder="Enter CAPTCHA code" 
               value={captchaAnswer}
               onChange={(e) => setCaptchaAnswer(e.target.value)}
               required 
