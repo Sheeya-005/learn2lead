@@ -16,7 +16,30 @@ export const DISTRICT_PRESETS = [
   { id: 'kanyakumari', name: 'Kanyakumari', lat: 8.0883, lng: 77.5385, region: 'Southern Tip' },
   { id: 'dindigul', name: 'Dindigul', lat: 10.3673, lng: 77.9803, region: 'Central Zone' },
   { id: 'tiruppur', name: 'Tiruppur', lat: 11.1085, lng: 77.3411, region: 'Western Zone' },
-  { id: 'cuddalore', name: 'Cuddalore', lat: 11.7480, lng: 79.7714, region: 'Coastal Central' }
+  { id: 'cuddalore', name: 'Cuddalore', lat: 11.7480, lng: 79.7714, region: 'Coastal Central' },
+  { id: 'chengalpattu', name: 'Chengalpattu', lat: 12.6841, lng: 79.9836, region: 'Northern Zone' },
+  { id: 'tiruvallur', name: 'Tiruvallur', lat: 13.1430, lng: 79.9077, region: 'Northern Zone' },
+  { id: 'tiruvannamalai', name: 'Tiruvannamalai', lat: 12.2253, lng: 79.0747, region: 'Northern Zone' },
+  { id: 'villupuram', name: 'Villupuram', lat: 11.9401, lng: 79.4861, region: 'Central Zone' },
+  { id: 'ranipet', name: 'Ranipet', lat: 12.9296, lng: 79.3331, region: 'Northern Zone' },
+  { id: 'tirupathur', name: 'Tirupathur', lat: 12.4926, lng: 78.5678, region: 'Northern Zone' },
+  { id: 'dharmapuri', name: 'Dharmapuri', lat: 12.1211, lng: 78.1582, region: 'Western Zone' },
+  { id: 'krishnagiri', name: 'Krishnagiri', lat: 12.5186, lng: 78.2137, region: 'Western Zone' },
+  { id: 'namakkal', name: 'Namakkal', lat: 11.2189, lng: 78.1674, region: 'Western Zone' },
+  { id: 'nilgiris', name: 'The Nilgiris (Ooty)', lat: 11.4102, lng: 76.6950, region: 'Hilly Western Zone' },
+  { id: 'karur', name: 'Karur', lat: 10.9601, lng: 78.0766, region: 'Central Zone' },
+  { id: 'perambalur', name: 'Perambalur', lat: 11.2342, lng: 78.8820, region: 'Central Zone' },
+  { id: 'ariyalur', name: 'Ariyalur', lat: 11.1401, lng: 79.0782, region: 'Central Zone' },
+  { id: 'pudukkottai', name: 'Pudukkottai', lat: 10.3797, lng: 78.8208, region: 'Delta Region' },
+  { id: 'tiruvarur', name: 'Tiruvarur', lat: 10.7725, lng: 79.6365, region: 'Delta Region' },
+  { id: 'nagapattinam', name: 'Nagapattinam', lat: 10.7672, lng: 79.8449, region: 'Coastal Delta' },
+  { id: 'mayiladuthurai', name: 'Mayiladuthurai', lat: 11.1018, lng: 79.6521, region: 'Coastal Delta' },
+  { id: 'sivagangai', name: 'Sivagangai', lat: 9.8433, lng: 78.4809, region: 'Southern Zone' },
+  { id: 'ramanathapuram', name: 'Ramanathapuram', lat: 9.3639, lng: 78.8395, region: 'Coastal South' },
+  { id: 'theni', name: 'Theni', lat: 10.0104, lng: 77.4768, region: 'Southern Zone' },
+  { id: 'virudhunagar', name: 'Virudhunagar', lat: 9.5872, lng: 77.9624, region: 'Southern Zone' },
+  { id: 'tenkasi', name: 'Tenkasi', lat: 8.9595, lng: 77.3150, region: 'Southern Zone' },
+  { id: 'kallakurichi', name: 'Kallakurichi', lat: 11.7384, lng: 78.9639, region: 'Central Zone' }
 ];
 
 const DistrictMap = ({ 
@@ -66,7 +89,7 @@ const DistrictMap = ({
             <Compass color="#059669" size={22} />
             <div>
               <div style={{ fontSize: '12px', fontWeight: '700', textTransform: 'uppercase', color: 'var(--text-secondary)', letterSpacing: '0.5px' }}>
-                Operational District
+                Operational District ({DISTRICT_PRESETS.length} Tamil Nadu Districts)
               </div>
               <div style={{ fontSize: '15px', fontWeight: '800', color: '#0f172a' }}>
                 {currentDistrict.name} <span style={{ fontSize: '12px', fontWeight: '500', color: '#059669' }}>({currentDistrict.region})</span>
@@ -74,7 +97,7 @@ const DistrictMap = ({
             </div>
           </div>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flex: '1', maxWidth: '360px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flex: '1', maxWidth: '380px' }}>
             <div style={{ position: 'relative', width: '100%' }}>
               <select 
                 value={currentDistrict.id} 
