@@ -5,12 +5,14 @@ import {
   Lock, LogOut, CheckCircle, ShieldAlert, XCircle, 
   Plus, Edit2, Trash2, Key, ToggleLeft, ToggleRight, Info 
 } from 'lucide-react';
+import DistrictMap from '../../components/DistrictMap';
 
 const AdministratorDashboard = () => {
   const { user, token, logoutUser, updateProfile } = useAuth();
   
   // Navigation: 'overview', 'users', 'police', 'admins', 'emergencies', 'logs', 'settings'
   const [activeTab, setActiveTab] = useState('overview');
+  const [selectedDistrictId, setSelectedDistrictId] = useState('chennai');
 
   // Stats State
   const [stats, setStats] = useState({ totalUsers: 0, totalPolice: 0, totalAdmins: 0, activeAlerts: 0, resolvedAlerts: 0 });
@@ -609,6 +611,15 @@ const AdministratorDashboard = () => {
                     </div>
                   )}
                 </div>
+              </div>
+
+              {/* District Live Location Map */}
+              <div style={{ marginTop: '10px' }}>
+                <DistrictMap 
+                  selectedDistrictId={selectedDistrictId}
+                  onDistrictChange={(district) => setSelectedDistrictId(district.id)}
+                  height="360px"
+                />
               </div>
 
             </div>

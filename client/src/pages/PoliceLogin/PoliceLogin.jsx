@@ -86,7 +86,7 @@ const PoliceLogin = () => {
           <ArrowLeft size={16} /> Home
         </button>
 
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '10px', marginBottom: '30px' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '10px', marginBottom: '20px' }}>
           <div style={{ width: '52px', height: '52px', borderRadius: '50%', background: 'rgba(217,119,6,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '16px' }}>
             <Landmark size={24} color="#d97706" />
           </div>
@@ -94,6 +94,18 @@ const PoliceLogin = () => {
           <p style={{ color: 'var(--text-secondary)', fontSize: '13px', textAlign: 'center', marginTop: '4px' }}>
             Access law enforcement assigned SOS alerts
           </p>
+        </div>
+
+        {/* Demo Credential Quick Helper */}
+        <div style={{ padding: '8px 12px', background: '#fffbeb', border: '1px solid #fde68a', borderRadius: '8px', marginBottom: '20px', fontSize: '12px', color: '#b45309', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <span>Demo Account: <strong>police</strong> / <strong>police123</strong></span>
+          <button 
+            type="button"
+            onClick={() => { setUsername('police'); setPassword('police123'); }}
+            style={{ background: '#d97706', color: '#fff', padding: '4px 8px', fontSize: '11px', borderRadius: '4px' }}
+          >
+            Auto Fill
+          </button>
         </div>
 
         {error && (

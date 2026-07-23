@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { Landmark, ShieldAlert, Phone, MapPin, Eye, Lock, LogOut, CheckCircle, Radio, Clock } from 'lucide-react';
+import DistrictMap from '../../components/DistrictMap';
 
 const PoliceDashboard = () => {
   const { user, token, logoutUser, updateProfile } = useAuth();
   
   // Tab states: 'alerts', 'settings'
   const [activeTab, setActiveTab] = useState('alerts');
+  const [selectedDistrictId, setSelectedDistrictId] = useState('chennai');
   
   // Alert states
   const [assignedAlerts, setAssignedAlerts] = useState([]);
@@ -368,14 +370,15 @@ const PoliceDashboard = () => {
                       <MapPin size={16} color="#ef4444" />
                       <strong>Coordinates:</strong> Lat: {parseFloat(selectedAlert.latitude).toFixed(5)}, Lng: {parseFloat(selectedAlert.longitude).toFixed(5)}
                     </div>
-                    {/* Leaflet open map preview mockup */}
-                    <div style={{ width: '100%', height: '140px', background: '#1e293b', borderRadius: '8px', border: '1px solid var(--border-color)', position: 'relative', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                      {/* Stylized background grids simulating Map grid lines */}
-                      <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, opacity: 0.15, background: 'radial-gradient(circle, #f59e0b 1px, transparent 1px) 0 0/16px 16px' }}></div>
-                      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '6px', zIndex: 1 }}>
-                        <Radio size={24} color="#ef4444" className="animate-pulse-sos" />
-                        <span style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Live GPS Location Active</span>
-                      </div>
+                    {/* Interactive District Map preview */}
+                    <div style={{ width: '100%' }}>
+                      <DistrictMap 
+                        selectedDistrictId={selectedDistrictId}
+                        onDistrictChange={(district) => setSelectedDistrictId(district.id)}
+                        userLat={selectedAlert ? parseFloat(selectedAlert.latitude) : null}
+                        userLng={selectedAlert ? parseFloat(selectedAlert.longitude) : null}
+                        height="260px"
+                      />
                     </div>
                   </div>
 

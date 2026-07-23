@@ -88,7 +88,7 @@ const UserLogin = () => {
           <ArrowLeft size={16} /> Home
         </button>
 
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '10px', marginBottom: '30px' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '10px', marginBottom: '20px' }}>
           <div style={{ width: '52px', height: '52px', borderRadius: '50%', background: 'rgba(5,150,105,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '16px' }}>
             <Users size={24} color="#059669" />
           </div>
@@ -96,6 +96,18 @@ const UserLogin = () => {
           <p style={{ color: 'var(--text-secondary)', fontSize: '13px', textAlign: 'center', marginTop: '4px' }}>
             Access emergency SOS status & profile logs
           </p>
+        </div>
+
+        {/* Demo Credential Quick Helper */}
+        <div style={{ padding: '8px 12px', background: '#ecfdf5', border: '1px solid #a7f3d0', borderRadius: '8px', marginBottom: '20px', fontSize: '12px', color: '#065f46', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <span>Demo Account: <strong>user</strong> / <strong>user123</strong></span>
+          <button 
+            type="button"
+            onClick={() => { setUsername('user'); setPassword('user123'); }}
+            style={{ background: '#059669', color: '#fff', padding: '4px 8px', fontSize: '11px', borderRadius: '4px' }}
+          >
+            Auto Fill
+          </button>
         </div>
 
         {error && (

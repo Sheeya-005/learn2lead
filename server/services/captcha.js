@@ -2,9 +2,9 @@ const jwt = require('jsonwebtoken');
 
 const JWT_SECRET = process.env.JWT_SECRET || 'super_secret_women_safety_key_2026_safe';
 
-function generateRandomAlphanumeric(length = 6) {
-  // Use only uppercase letters and numbers, and exclude easily confused characters (I, O, 0, 1)
-  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+function generateRandomAlphanumeric(length = 5) {
+  // Use uppercase letters and numbers, excluding confusing characters (I, O, 0, 1, L)
+  const chars = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789';
   let text = '';
   for (let i = 0; i < length; i++) {
     text += chars.charAt(Math.floor(Math.random() * chars.length));
@@ -15,47 +15,21 @@ function generateRandomAlphanumeric(length = 6) {
 function generateCaptchaSvg(text) {
   const width = 130;
   const height = 45;
-  
-  // Add some random noise lines (reduced from 4 to 2 for better legibility)
-  let lines = '';
-  for (let i = 0; i < 2; i++) {
-    const x1 = Math.floor(Math.random() * width);
-    const y1 = Math.floor(Math.random() * height);
-    const x2 = Math.floor(Math.random() * width);
-    const y2 = Math.floor(Math.random() * height);
-    const color = `hsl(${Math.floor(Math.random() * 360)}, 30%, 60%)`;
-    lines += `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${color}" stroke-width="1.5" opacity="0.6" />`;
-  }
-
-  // Add random noise dots (reduced from 30 to 15 for better legibility)
-  let dots = '';
-  for (let i = 0; i < 15; i++) {
-    const cx = Math.floor(Math.random() * width);
-    const cy = Math.floor(Math.random() * height);
-    const r = Math.floor(Math.random() * 2) + 1;
-    const color = `hsl(${Math.floor(Math.random() * 360)}, 20%, 70%)`;
-    dots += `<circle cx="${cx}" cy="${cy}" r="${r}" fill="${color}" opacity="0.5" />`;
-  }
-
-  // Generate SVG with slightly skewed/rotated text
-  const rotation = Math.floor(Math.random() * 10) - 5; // -5 to +5 deg
-  const textColor = '#e2e8f0'; // Tailwind Slate-200 compatible color
+  const textColor = '#065f46'; // High contrast deep emerald green
+  const bgColor = '#ecfdf5';   // Crisp light emerald green background
   
   const svg = `
-    <svg width="${width}" height="${height}" viewBox="0 0 ${width} ${height}" xmlns="http://www.w3.org/2000/svg" style="background-color: #1e293b; border-radius: 6px; user-select: none;">
-      ${lines}
-      ${dots}
+    <svg width="${width}" height="${height}" viewBox="0 0 ${width} ${height}" xmlns="http://www.w3.org/2000/svg" style="background-color: ${bgColor}; border: 1px solid #a7f3d0; border-radius: 6px; user-select: none;">
       <text 
         x="50%" 
-        y="55%" 
+        y="54%" 
         dominant-baseline="middle" 
         text-anchor="middle" 
         fill="${textColor}" 
-        font-family="Courier, monospace" 
-        font-weight="bold" 
-        font-size="20" 
-        transform="rotate(${rotation} ${width/2} ${height/2})"
-        letter-spacing="2"
+        font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" 
+        font-weight="800" 
+        font-size="22" 
+        letter-spacing="4"
       >
         ${text}
       </text>
@@ -68,7 +42,7 @@ function generateCaptchaSvg(text) {
 }
 
 function createCaptcha() {
-  const text = generateRandomAlphanumeric(6);
+  const text = generateRandomAlphanumeric(5);
   const image = generateCaptchaSvg(text);
   
   // Sign the captcha token with JWT (expires in 3 minutes)

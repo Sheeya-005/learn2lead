@@ -1,12 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { ShieldAlert, User, Phone, MapPin, Eye, Lock, LogOut, History, Shield, CheckCircle, XCircle } from 'lucide-react';
+import DistrictMap from '../../components/DistrictMap';
 
 const UserDashboard = () => {
   const { user, token, logoutUser, updateProfile } = useAuth();
   
   // Tab states: 'dashboard', 'history', 'settings'
   const [activeTab, setActiveTab] = useState('dashboard');
+  const [selectedDistrictId, setSelectedDistrictId] = useState('chennai');
   
   // SOS & Emergency states
   const [activeSOS, setActiveSOS] = useState(null);
@@ -496,6 +498,16 @@ const UserDashboard = () => {
                   </div>
                 </div>
 
+              </div>
+
+              {/* District Selection & Live GPS Map */}
+              <div style={{ marginTop: '10px' }}>
+                <DistrictMap 
+                  selectedDistrictId={selectedDistrictId}
+                  onDistrictChange={(district) => setSelectedDistrictId(district.id)}
+                  userLat={activeSOS ? parseFloat(activeSOS.latitude) : null}
+                  userLng={activeSOS ? parseFloat(activeSOS.longitude) : null}
+                />
               </div>
 
             </div>

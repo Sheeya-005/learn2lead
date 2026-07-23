@@ -102,21 +102,23 @@ exports.login = async (req, res) => {
     let userRecord = null;
     let table = '';
 
-    if (role === 'USER') {
-      table = 'users';
-    } else if (role === 'POLICE') {
-      table = 'police_officers';
+    let records = [];
+    if (role === 'POLICE') {
+      const [resRecords] = await db.query(`SELECT * FROM police_officers WHERE username = ? OR police_id = ?`, [username, username]);
+      records = resRecords;
+    } else if (role === 'USER') {
+      const [resRecords] = await db.query(`SELECT * FROM users WHERE username = ?`, [username]);
+      records = resRecords;
     } else if (role === 'ADMINISTRATOR') {
-      table = 'administrators';
+      const [resRecords] = await db.query(`SELECT * FROM administrators WHERE username = ?`, [username]);
+      records = resRecords;
     } else {
       return res.status(400).json({ success: false, message: 'Invalid login role specified' });
     }
 
-    // Fetch user details from appropriate table
-    const [records] = await db.query(`SELECT * FROM ${table} WHERE username = ?`, [username]);
     if (records.length === 0) {
       await logLogin(username, role, 'failed', ipAddress);
-      return res.status(401).json({ success: false, message: 'Invalid username or password' });
+      return res.status(401).json({ success: false, message: 'Invalid username, police ID, or password' });
     }
 
     userRecord = records[0];
