@@ -18,11 +18,17 @@ async function logAdminActivity(adminName, action, description) {
 // ==========================================
 exports.getStats = async (req, res) => {
   try {
-    const [[{ totalUsers }]] = await db.query('SELECT COUNT(*) AS totalUsers FROM users');
-    const [[{ totalPolice }]] = await db.query('SELECT COUNT(*) AS totalPolice FROM police_officers');
-    const [[{ totalAdmins }]] = await db.query('SELECT COUNT(*) AS totalAdmins FROM administrators');
-    const [[{ activeAlerts }]] = await db.query('SELECT COUNT(*) AS activeAlerts FROM emergency_alerts WHERE alert_status != "resolved"');
-    const [[{ resolvedAlerts }]] = await db.query('SELECT COUNT(*) AS resolvedAlerts FROM emergency_alerts WHERE alert_status = "resolved"');
+    const [usersRes] = await db.query('SELECT COUNT(*) AS totalUsers FROM users');
+    const [policeRes] = await db.query('SELECT COUNT(*) AS totalPolice FROM police_officers');
+    const [adminsRes] = await db.query('SELECT COUNT(*) AS totalAdmins FROM administrators');
+    const [alertsRes] = await db.query('SELECT COUNT(*) AS activeAlerts FROM emergency_alerts WHERE alert_status != "resolved"');
+    const [resolvedRes] = await db.query('SELECT COUNT(*) AS resolvedAlerts FROM emergency_alerts WHERE alert_status = "resolved"');
+
+    const totalUsers = (usersRes && usersRes[0]) ? (usersRes[0].totalUsers || usersRes.length) : 0;
+    const totalPolice = (policeRes && policeRes[0]) ? (policeRes[0].totalPolice || policeRes.length) : 0;
+    const totalAdmins = (adminsRes && adminsRes[0]) ? (adminsRes[0].totalAdmins || adminsRes.length) : 0;
+    const activeAlerts = (alertsRes && alertsRes[0]) ? (alertsRes[0].activeAlerts || alertsRes.length) : 0;
+    const resolvedAlerts = (resolvedRes && resolvedRes[0]) ? (resolvedRes[0].resolvedAlerts || resolvedRes.length) : 0;
 
     return res.status(200).json({
       success: true,
