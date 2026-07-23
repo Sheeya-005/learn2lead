@@ -465,13 +465,13 @@ const AdministratorDashboard = () => {
   if (!user) return null;
 
   return (
-    <div style={{ minHeight: '100vh', background: '#0b0f19', display: 'flex', flexDirection: 'column' }}>
+    <div style={{ minHeight: '100vh', background: 'var(--bg-main)', display: 'flex', flexDirection: 'column' }}>
       
       {/* Header */}
-      <header style={{ background: 'var(--bg-sidebar)', borderBottom: '1px solid var(--border-color)', padding: '16px 5%', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+      <header style={{ background: '#ffffff', borderBottom: '1px solid var(--border-color)', padding: '16px 5%', display: 'flex', justifyContent: 'space-between', alignItems: 'center', boxShadow: '0 1px 3px rgba(0,0,0,0.05)' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-          <Shield size={28} color="#ef4444" />
-          <span style={{ fontSize: '20px', fontWeight: '800', letterSpacing: '0.5px' }}>SAFEWATCH COMMAND</span>
+          <Shield size={28} color="#059669" />
+          <span style={{ fontSize: '20px', fontWeight: '800', letterSpacing: '0.5px', color: '#0f172a' }}>SAFEWATCH COMMAND</span>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
           <button className="btn-outline" onClick={logoutUser} style={{ display: 'flex', alignItems: 'center', gap: '8px', borderColor: 'rgba(239, 68, 68, 0.3)', color: '#ef4444' }}>
@@ -481,65 +481,65 @@ const AdministratorDashboard = () => {
       </header>
 
       {/* Main Grid Workspace */}
-      <div style={{ flex: 1, display: 'grid', gridTemplateColumns: 'clamp(240px, 15vw, 290px) 1fr', minHeight: 'calc(100vh - 73px)' }}>
+      <div style={{ flex: 1, display: 'grid', gridTemplateColumns: 'clamp(250px, 16vw, 300px) 1fr', minHeight: 'calc(100vh - 73px)' }}>
         
         {/* Sidebar Nav */}
-        <aside style={{ background: 'var(--bg-sidebar)', borderRight: '1px solid var(--border-color)', padding: '24px 16px', display: 'flex', flexDirection: 'column', gap: '24px' }}>
+        <aside style={{ background: '#ffffff', borderRight: '1px solid var(--border-color)', padding: '24px 16px', display: 'flex', flexDirection: 'column', gap: '24px' }}>
           
           {/* Admin Tag */}
-          <div className="glass-panel" style={{ padding: '14px', background: 'rgba(15,23,42,0.5)', display: 'flex', alignItems: 'center', gap: '10px' }}>
-            <div style={{ width: '36px', height: '36px', borderRadius: '50%', background: '#ef4444', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontWeight: '800' }}>
+          <div className="glass-panel" style={{ padding: '16px', background: '#f8fafc', border: '1px solid #e2e8f0', display: 'flex', alignItems: 'center', gap: '12px', borderRadius: '12px' }}>
+            <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: '#059669', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontWeight: '800', fontSize: '16px' }}>
               A
             </div>
             <div>
-              <div style={{ fontWeight: '700', fontSize: '13px' }}>{user.fullName}</div>
-              <div style={{ fontSize: '10px', color: '#fca5a5', fontWeight: '600' }}>System Admin</div>
+              <div style={{ fontWeight: '800', fontSize: '14px', color: '#0f172a' }}>{user.fullName}</div>
+              <div style={{ fontSize: '11px', color: '#059669', fontWeight: '700' }}>System Administrator</div>
             </div>
           </div>
 
           {/* Nav list */}
-          <nav style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+          <nav style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
             <button 
               onClick={() => setActiveTab('overview')}
-              style={{ width: '100%', textAlign: 'left', display: 'flex', alignItems: 'center', gap: '10px', background: activeTab === 'overview' ? '#ef4444' : 'transparent', color: '#fff', padding: '12px' }}
+              style={{ width: '100%', textAlign: 'left', display: 'flex', alignItems: 'center', gap: '12px', background: activeTab === 'overview' ? '#059669' : 'transparent', color: activeTab === 'overview' ? '#ffffff' : '#334155', padding: '12px 16px', borderRadius: '10px', fontWeight: activeTab === 'overview' ? '700' : '600', fontSize: '14px', border: 'none', cursor: 'pointer', transition: 'all 0.2s ease' }}
             >
               <Activity size={18} /> Telemetry Overview
             </button>
             <button 
               onClick={() => setActiveTab('users')}
-              style={{ width: '100%', textAlign: 'left', display: 'flex', alignItems: 'center', gap: '10px', background: activeTab === 'users' ? '#ef4444' : 'transparent', color: '#fff', padding: '12px' }}
+              style={{ width: '100%', textAlign: 'left', display: 'flex', alignItems: 'center', gap: '12px', background: activeTab === 'users' ? '#059669' : 'transparent', color: activeTab === 'users' ? '#ffffff' : '#334155', padding: '12px 16px', borderRadius: '10px', fontWeight: activeTab === 'users' ? '700' : '600', fontSize: '14px', border: 'none', cursor: 'pointer', transition: 'all 0.2s ease' }}
             >
-              <Users size={18} /> Manage Citizens
+              <Users size={18} /> Citizen Accounts
             </button>
             <button 
               onClick={() => setActiveTab('police')}
-              style={{ width: '100%', textAlign: 'left', display: 'flex', alignItems: 'center', gap: '10px', background: activeTab === 'police' ? '#ef4444' : 'transparent', color: '#fff', padding: '12px' }}
+              style={{ width: '100%', textAlign: 'left', display: 'flex', alignItems: 'center', gap: '12px', background: activeTab === 'police' ? '#059669' : 'transparent', color: activeTab === 'police' ? '#ffffff' : '#334155', padding: '12px 16px', borderRadius: '10px', fontWeight: activeTab === 'police' ? '700' : '600', fontSize: '14px', border: 'none', cursor: 'pointer', transition: 'all 0.2s ease' }}
             >
-              <Landmark size={18} /> Manage Police
+              <Landmark size={18} /> Law Enforcement Responders
             </button>
             <button 
               onClick={() => setActiveTab('admins')}
-              style={{ width: '100%', textAlign: 'left', display: 'flex', alignItems: 'center', gap: '10px', background: activeTab === 'admins' ? '#ef4444' : 'transparent', color: '#fff', padding: '12px' }}
+              style={{ width: '100%', textAlign: 'left', display: 'flex', alignItems: 'center', gap: '12px', background: activeTab === 'admins' ? '#059669' : 'transparent', color: activeTab === 'admins' ? '#ffffff' : '#334155', padding: '12px 16px', borderRadius: '10px', fontWeight: activeTab === 'admins' ? '700' : '600', fontSize: '14px', border: 'none', cursor: 'pointer', transition: 'all 0.2s ease' }}
             >
-              <Shield size={18} /> Manage Admins
+              <Shield size={18} /> Administrators
             </button>
             <button 
               onClick={() => setActiveTab('emergencies')}
-              style={{ width: '100%', textAlign: 'left', display: 'flex', alignItems: 'center', gap: '10px', background: activeTab === 'emergencies' ? '#ef4444' : 'transparent', color: '#fff', padding: '12px' }}
+              style={{ width: '100%', textAlign: 'left', display: 'flex', alignItems: 'center', gap: '12px', background: activeTab === 'emergencies' ? '#059669' : 'transparent', color: activeTab === 'emergencies' ? '#ffffff' : '#334155', padding: '12px 16px', borderRadius: '10px', fontWeight: activeTab === 'emergencies' ? '700' : '600', fontSize: '14px', border: 'none', cursor: 'pointer', transition: 'all 0.2s ease' }}
             >
-              <AlertTriangle size={18} /> SOS Incidents
+              <AlertTriangle size={18} /> Emergency SOS Board
             </button>
             <button 
               onClick={() => setActiveTab('logs')}
-              style={{ width: '100%', textAlign: 'left', display: 'flex', alignItems: 'center', gap: '10px', background: activeTab === 'logs' ? '#ef4444' : 'transparent', color: '#fff', padding: '12px' }}
+              style={{ width: '100%', textAlign: 'left', display: 'flex', alignItems: 'center', gap: '12px', background: activeTab === 'logs' ? '#059669' : 'transparent', color: activeTab === 'logs' ? '#ffffff' : '#334155', padding: '12px 16px', borderRadius: '10px', fontWeight: activeTab === 'logs' ? '700' : '600', fontSize: '14px', border: 'none', cursor: 'pointer', transition: 'all 0.2s ease' }}
             >
-              <Activity size={18} /> System Audit Logs
+              <Activity size={18} /> Audit System Logs
             </button>
             <button 
               onClick={() => setActiveTab('settings')}
-              style={{ width: '100%', textAlign: 'left', display: 'flex', alignItems: 'center', gap: '10px', background: activeTab === 'settings' ? '#ef4444' : 'transparent', color: '#fff', padding: '12px' }}
+              style={{ width: '100%', textAlign: 'left', display: 'flex', alignItems: 'center', gap: '12px', background: activeTab === 'settings' ? '#059669' : 'transparent', color: activeTab === 'settings' ? '#ffffff' : '#334155', padding: '12px 16px', borderRadius: '10px', fontWeight: activeTab === 'settings' ? '700' : '600', fontSize: '14px', border: 'none', cursor: 'pointer', transition: 'all 0.2s ease' }}
             >
-              <Lock size={18} /> Update Password
+              <Lock size={18} /> Admin Settings
             </button>
           </nav>
 

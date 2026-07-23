@@ -278,13 +278,13 @@ const PoliceDashboard = () => {
           <nav style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
             <button 
               onClick={() => setActiveTab('alerts')}
-              style={{ width: '100%', textAlign: 'left', display: 'flex', alignItems: 'center', gap: '10px', background: activeTab === 'alerts' ? 'var(--warning)' : 'transparent', color: activeTab === 'alerts' ? '#0b0f19' : '#fff', padding: '12px', fontWeight: activeTab === 'alerts' ? '700' : '500' }}
+              style={{ width: '100%', textAlign: 'left', display: 'flex', alignItems: 'center', gap: '10px', background: activeTab === 'alerts' ? '#059669' : 'transparent', color: activeTab === 'alerts' ? '#ffffff' : '#334155', padding: '12px 16px', borderRadius: '10px', fontWeight: activeTab === 'alerts' ? '700' : '600', fontSize: '14px', border: 'none', cursor: 'pointer' }}
             >
               <ShieldAlert size={18} /> Assigned Alerts
             </button>
             <button 
               onClick={() => setActiveTab('settings')}
-              style={{ width: '100%', textAlign: 'left', display: 'flex', alignItems: 'center', gap: '10px', background: activeTab === 'settings' ? 'var(--warning)' : 'transparent', color: activeTab === 'settings' ? '#0b0f19' : '#fff', padding: '12px', fontWeight: activeTab === 'settings' ? '700' : '500' }}
+              style={{ width: '100%', textAlign: 'left', display: 'flex', alignItems: 'center', gap: '10px', background: activeTab === 'settings' ? '#059669' : 'transparent', color: activeTab === 'settings' ? '#ffffff' : '#334155', padding: '12px 16px', borderRadius: '10px', fontWeight: activeTab === 'settings' ? '700' : '600', fontSize: '14px', border: 'none', cursor: 'pointer' }}
             >
               <Lock size={18} /> Update Password
             </button>
