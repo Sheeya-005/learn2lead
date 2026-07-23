@@ -6,6 +6,7 @@ import {
   Plus, Edit2, Trash2, Key, ToggleLeft, ToggleRight, Info 
 } from 'lucide-react';
 import DistrictMap from '../../components/DistrictMap';
+import DistrictAnalyticsChart from '../../components/DistrictAnalyticsChart';
 
 const AdministratorDashboard = () => {
   const { user, token, logoutUser, updateProfile } = useAuth();
@@ -618,8 +619,14 @@ const AdministratorDashboard = () => {
                 <DistrictMap 
                   selectedDistrictId={selectedDistrictId}
                   onDistrictChange={(district) => setSelectedDistrictId(district.id)}
+                  alerts={alerts}
                   height="360px"
                 />
+              </div>
+
+              {/* District-Wise Solved & Unsolved Graph Analytics Chart */}
+              <div style={{ marginTop: '10px' }}>
+                <DistrictAnalyticsChart alerts={alerts} />
               </div>
 
             </div>
